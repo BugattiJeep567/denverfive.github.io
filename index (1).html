@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Denver News Station 5</title>
+<link rel="stylesheet" href="style.css">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Source+Serif+4:ital,wght@0,300;0,400;0,600;1,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="site-header">
+  <div class="breaking-bar">
+    <span class="breaking-label">LIVE</span>
+    <div class="ticker-wrap">
+      <div class="ticker" id="breakingTicker">DENVER NEWS STATION 5 — YOUR LOCAL SOURCE FOR TRUTH &nbsp;&nbsp;&nbsp;•&nbsp;&nbsp;&nbsp; STAY INFORMED, DENVER &nbsp;&nbsp;&nbsp;•&nbsp;&nbsp;&nbsp; BREAKING NEWS AS IT HAPPENS</div>
+    </div>
+  </div>
+  <div class="header-main">
+    <div class="header-logo">
+      <div class="logo-badge">5</div>
+      <div class="logo-text">
+        <span class="logo-city">DENVER</span>
+        <span class="logo-name">NEWS STATION</span>
+      </div>
+    </div>
+    <div class="header-date" id="headerDate"></div>
+  </div>
+  <nav class="main-nav">
+    <button class="nav-btn active" onclick="showTab('home')">HOME</button>
+    <button class="nav-btn" onclick="showTab('write')">WRITE ARTICLE</button>
+    <button class="nav-btn" onclick="showTab('apply')">APPLY</button>
+  </nav>
+</header>
+
+<!-- HOME TAB -->
+<div id="tab-home" class="tab-content active">
+  <main class="homepage">
+    <div class="hero-slot" id="heroSlot">
+      <div class="hero-placeholder">
+        <p>No articles yet. Write your first story!</p>
+      </div>
+    </div>
+    <div class="news-grid" id="newsGrid"></div>
+  </main>
+</div>
+
+<!-- WRITE ARTICLE TAB -->
+<div id="tab-write" class="tab-content">
+  <div class="write-container">
+    <h2 class="section-title">WRITE AN ARTICLE</h2>
+
+    <div class="form-group">
+      <label>HEADLINE *</label>
+      <input type="text" id="artHeadline" placeholder="Enter your headline...">
+    </div>
+
+    <div class="form-group">
+      <label>CATEGORY</label>
+      <select id="artCategory">
+        <option>Breaking News</option>
+        <option>Local</option>
+        <option>Crime</option>
+        <option>Weather</option>
+        <option>Sports</option>
+        <option>Politics</option>
+        <option>Community</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label>REPORTER NAME *</label>
+      <input type="text" id="artReporter" placeholder="Your name...">
+    </div>
+
+    <div class="form-group">
+      <label>ARTICLE IMAGE</label>
+      <div class="image-drop-zone" id="imageDropZone" onclick="document.getElementById('artImage').click()">
+        <div class="drop-icon">📷</div>
+        <p>Click to upload or drag & drop an image</p>
+        <span>JPG, PNG, GIF, WEBP supported</span>
+        <input type="file" id="artImage" accept="image/*" style="display:none" onchange="handleImageUpload(event)">
+      </div>
+      <div id="imagePreview" class="image-preview-wrap" style="display:none">
+        <img id="previewImg" src="" alt="Preview">
+        <button class="remove-img-btn" onclick="removeImage()">✕ Remove</button>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label>IMAGE CAPTION</label>
+      <input type="text" id="artCaption" placeholder="Describe the image...">
+    </div>
+
+    <div class="form-group">
+      <label>ARTICLE BODY *</label>
+      <div class="toolbar">
+        <button class="tb-btn" onclick="formatText('bold')" title="Bold"><b>B</b></button>
+        <button class="tb-btn" onclick="formatText('italic')" title="Italic"><i>I</i></button>
+        <button class="tb-btn" onclick="formatText('underline')" title="Underline"><u>U</u></button>
+        <button class="tb-btn" onclick="insertBreak()" title="Paragraph Break">¶</button>
+      </div>
+      <div id="artBody" class="article-editor" contenteditable="true" placeholder="Write your article here..."></div>
+    </div>
+
+    <div class="form-actions">
+      <button class="btn-primary" onclick="publishArticle()">PUBLISH ARTICLE</button>
+      <button class="btn-secondary" onclick="clearForm()">CLEAR</button>
+    </div>
+
+    <div id="publishMsg" class="publish-msg" style="display:none"></div>
+  </div>
+</div>
+
+<!-- APPLY TAB -->
+<div id="tab-apply" class="tab-content">
+  <div class="apply-container">
+    <div class="apply-header">
+      <div class="apply-badge">5</div>
+      <div>
+        <h2>JOIN OUR TEAM</h2>
+        <p>Denver News Station 5 is looking for passionate journalists, reporters, and media professionals.</p>
+      </div>
+    </div>
+
+    <form id="applyForm" onsubmit="submitApplication(event)">
+      <div class="apply-section">
+        <h3>YOUR INFO</h3>
+        <div class="form-row">
+          <div class="form-group">
+            <label>DISCORD USERNAME *</label>
+            <input type="text" id="appDiscord" placeholder="username#0000 or @username" required>
+          </div>
+          <div class="form-group">
+            <label>ROBLOX USERNAME *</label>
+            <input type="text" id="appRoblox" placeholder="Your Roblox display name" required>
+          </div>
+        </div>
+      </div>
+
+      <div class="apply-section">
+        <h3>EXPERIENCE</h3>
+        <div class="form-group">
+          <label>PAST EXPERIENCE *</label>
+          <textarea id="appExperience" rows="5" placeholder="Tell us about your previous journalism, writing, broadcasting, or media experience. Include any relevant groups, stations, or roles you've held..." required></textarea>
+        </div>
+      </div>
+
+      <div class="apply-section">
+        <h3>WRITING SAMPLES</h3>
+        <p class="section-desc">Show us how you handle breaking news. Write your reports below.</p>
+
+        <div class="form-group scenario">
+          <label>
+            <span class="scenario-tag">SCENARIO 1</span>
+            How would you write a report on a fire at a hospital?
+          </label>
+          <textarea id="appFire" rows="8" placeholder="Write your full news report here. Include a headline, lead paragraph, details, quotes, and a closing. Be thorough and professional..." required></textarea>
+        </div>
+
+        <div class="form-group scenario">
+          <label>
+            <span class="scenario-tag">SCENARIO 2</span>
+            How would you write a report on someone who murdered 4 people and was arrested?
+          </label>
+          <textarea id="appMurder" rows="8" placeholder="Write your full news report here. Include a headline, lead paragraph, suspect details (fictional), charges, and community response..." required></textarea>
+        </div>
+      </div>
+
+      <div class="form-actions">
+        <button type="submit" class="btn-primary">SUBMIT APPLICATION</button>
+      </div>
+    </form>
+
+    <div id="applySuccess" class="apply-success" style="display:none">
+      <div class="success-icon">✓</div>
+      <h3>APPLICATION SUBMITTED</h3>
+      <p>Thank you for applying to Denver News Station 5. Our team will review your application and reach out via Discord.</p>
+      <button class="btn-secondary" onclick="resetApplication()">SUBMIT ANOTHER</button>
+    </div>
+  </div>
+</div>
+
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-logo"><span class="logo-badge small">5</span> Denver News Station 5</div>
+    <p>© 2025 Denver News Station 5. All rights reserved.</p>
+  </div>
+</footer>
+
+<script src="app.js"></script>
+</body>
+</html>
