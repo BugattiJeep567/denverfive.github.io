@@ -219,6 +219,9 @@ body{background:var(--bg);color:var(--text);font-family:Georgia,serif;min-height
 .scenario-q{font-size:14px;color:var(--text);margin-bottom:10px;line-height:1.5}
 /* APPS PANEL */
 .apps-wrap{max-width:900px;margin:0 auto;padding:50px 20px}
+.app-tabs{display:flex;gap:0;margin-bottom:28px;border-bottom:2px solid var(--border)}
+.app-tab-btn{background:none;border:none;border-bottom:3px solid transparent;margin-bottom:-2px;color:var(--muted);font-family:monospace;font-size:12px;letter-spacing:2px;padding:12px 22px;cursor:pointer;transition:all .2s}
+.app-tab-btn.active{color:var(--white);border-bottom-color:var(--red)}
 .app-item{background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:24px;margin-bottom:16px}
 .app-item-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:16px}
 .app-item h3{font-size:16px;color:var(--white);margin-bottom:4px}
@@ -226,7 +229,18 @@ body{background:var(--bg);color:var(--text);font-family:Georgia,serif;min-height
 .app-section{margin-bottom:14px}
 .app-section-label{font-family:monospace;font-size:10px;letter-spacing:2px;color:var(--gold);margin-bottom:6px}
 .app-section-text{font-size:13px;color:var(--text);line-height:1.6;background:var(--mid);padding:10px 14px;border-radius:4px;white-space:pre-wrap}
+.app-decision-btns{display:flex;gap:8px;margin-top:14px}
+.accept-btn{background:rgba(40,167,69,.2);color:#6dcf7e;border:1px solid rgba(40,167,69,.4);font-family:monospace;font-size:11px;padding:8px 16px;border-radius:3px;cursor:pointer;transition:all .2s}
+.accept-btn:hover{background:rgba(40,167,69,.35)}
+.deny-btn{background:rgba(200,16,46,.2);color:#e87985;border:1px solid rgba(200,16,46,.4);font-family:monospace;font-size:11px;padding:8px 16px;border-radius:3px;cursor:pointer;transition:all .2s}
+.deny-btn:hover{background:rgba(200,16,46,.35)}
+.status-badge{font-family:monospace;font-size:10px;letter-spacing:2px;padding:4px 10px;border-radius:2px;display:inline-block}
+.status-badge.accepted{background:rgba(40,167,69,.15);color:#6dcf7e;border:1px solid rgba(40,167,69,.3)}
+.status-badge.denied{background:rgba(200,16,46,.15);color:#e87985;border:1px solid rgba(200,16,46,.3)}
+.status-badge.pending{background:rgba(212,168,67,.15);color:var(--gold);border:1px solid rgba(212,168,67,.3)}
 .no-apps{text-align:center;padding:60px 20px;color:var(--muted);font-family:monospace}
+/* COOLDOWN */
+.cooldown-msg{background:rgba(200,16,46,.12);border:1px solid rgba(200,16,46,.35);color:#e87985;font-family:monospace;font-size:12px;padding:12px 18px;border-radius:4px;margin-top:14px;display:none}
 /* SUCCESS */
 .success-box{text-align:center;padding:80px 40px}
 .success-icon{width:80px;height:80px;background:rgba(40,167,69,.12);border:2px solid rgba(40,167,69,.4);color:#6dcf7e;font-size:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 24px}
@@ -402,6 +416,7 @@ body{background:var(--bg);color:var(--text);font-family:Georgia,serif;min-height
         <div class="fg"><div class="s-tag">SCENARIO 2 — CRIME</div><div class="scenario-q">How would you write a report on someone who murdered 4 people and was arrested?</div><textarea id="appMurder" rows="8" placeholder="Write your full news report here..."></textarea></div>
       </div>
       <button class="btn-red" onclick="submitApp()">SUBMIT APPLICATION</button>
+      <div class="cooldown-msg" id="appCooldownMsg"></div>
     </div>
     <div id="applySuccess" class="success-box" style="display:none">
       <div class="success-icon">✓</div>
@@ -440,6 +455,7 @@ body{background:var(--bg);color:var(--text);font-family:Georgia,serif;min-height
         <button class="btn-red" onclick="submitContact()">SEND MESSAGE</button>
         <button class="btn-ghost" onclick="clearContact()">CLEAR</button>
       </div>
+      <div class="cooldown-msg" id="contactCooldownMsg"></div>
     </div>
     <div id="contactSuccess" class="contact-success" style="display:none">
       <div class="success-icon" style="width:80px;height:80px;background:rgba(40,167,69,.12);border:2px solid rgba(40,167,69,.4);color:#6dcf7e;font-size:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 24px;">✓</div>
@@ -489,6 +505,11 @@ body{background:var(--bg);color:var(--text);font-family:Georgia,serif;min-height
 <div id="tab-apps" class="tab">
   <div class="apps-wrap">
     <div class="sec-title">STAFF APPLICATIONS</div>
+    <div class="app-tabs">
+      <button class="app-tab-btn active" onclick="setAppTab('pending',this)">⏳ PENDING</button>
+      <button class="app-tab-btn" onclick="setAppTab('accepted',this)">✓ ACCEPTED</button>
+      <button class="app-tab-btn" onclick="setAppTab('denied',this)">✕ DENIED</button>
+    </div>
     <div id="appsList"></div>
   </div>
 </div>
@@ -628,14 +649,19 @@ async function sbSetSetting(key, value) {
 // ══════════════════════════════════════════════
 //  STATE
 // ══════════════════════════════════════════════
-var CREDS  = { user: 'Bugatti#1', pass: 'Bugatti#123' };
-var CREDS2 = { user: 'Ekam#1',    pass: 'Ekam#123' };
+var CREDS  = { user: 'Bugatti',      pass: 'Bugatti#1frfr' };  // Full admin
+var CREDS2 = { user: 'Ekambirr',     pass: 'Ekamisdabest' };   // Staff
+var REPORTERS = [
+  { user: 'Tingzhou02',   pass: 'bmwloverm3' },
+  { user: 'd5-redst0ne8', pass: 'v&!D%B0P82^&AD^WdADe' }
+];
 var articles = [];
 var staffMembers = [];
 var imgData = null;
 var staffImgData = null;
 var loggedIn = false;
 var isAdmin = false;
+var isReporter = false;
 var currentUser = '';
 var editingStaffId = null;
 var activeCategory = 'ALL';
@@ -721,7 +747,7 @@ function applyTheme() {
 // ══════════════════════════════════════════════
 function showTab(name) {
   if (name === 'write' && !loggedIn) { openLogin(); return; }
-  if (['apps','messages','logs'].indexOf(name) !== -1 && !loggedIn) return;
+  if (['apps','messages','logs'].indexOf(name) !== -1 && (!loggedIn || isReporter)) return;
   document.querySelectorAll('.tab').forEach(function(t){ t.classList.remove('active'); });
   document.querySelectorAll('.nav-btn').forEach(function(b){ b.classList.remove('active'); });
   document.getElementById('tab-'+name).classList.add('active');
@@ -748,8 +774,12 @@ async function doLogin() {
   var u = document.getElementById('loginUser').value.trim();
   var p = document.getElementById('loginPass').value;
   var matched = false;
+  isAdmin = false; isReporter = false;
   if (u === CREDS.user  && p === CREDS.pass)  { matched = true; isAdmin = true;  currentUser = CREDS.user; }
   if (u === CREDS2.user && p === CREDS2.pass) { matched = true; isAdmin = false; currentUser = CREDS2.user; }
+  for (var i = 0; i < REPORTERS.length; i++) {
+    if (u === REPORTERS[i].user && p === REPORTERS[i].pass) { matched = true; isReporter = true; currentUser = REPORTERS[i].user; break; }
+  }
   if (matched) {
     loggedIn = true; closeLogin(); updateAuthUI();
     if (isAdmin) {
@@ -757,7 +787,6 @@ async function doLogin() {
       document.getElementById('announceEditBar').classList.add('show');
       await loadSettings();
     }
-    // fetch location and log
     try {
       var geo = await fetch('https://ipapi.co/json/').then(function(r){return r.json();});
       var loc = (geo.city && geo.country_name) ? geo.city+', '+geo.country_name : (geo.country_name||'Unknown');
@@ -775,7 +804,7 @@ async function doLogin() {
 
 function doLogout() {
   addLog('login', currentUser, 'signed out', null, null);
-  loggedIn = false; isAdmin = false; currentUser = '';
+  loggedIn = false; isAdmin = false; isReporter = false; currentUser = '';
   updateAuthUI();
   document.getElementById('tickerBar').classList.remove('show');
   document.getElementById('announceEditBar').classList.remove('show');
@@ -785,14 +814,18 @@ function doLogout() {
 function updateAuthUI() {
   var area = document.getElementById('navAuthArea');
   if (loggedIn) {
+    var roleLabel = isReporter ? '✍️ REPORTER' : (isAdmin ? '⭐ ADMIN' : '👤 STAFF');
+    var adminBtns = !isReporter
+      ? '<button class="nav-btn" onclick="showTab(\'apps\')" style="color:var(--gold);">APPLICATIONS</button>'+
+        '<button class="nav-btn" onclick="showTab(\'messages\')" style="color:var(--gold);">MESSAGES<span id="unreadNavBadge"></span></button>'+
+        '<button class="nav-btn" onclick="showTab(\'logs\')" style="color:var(--gold);">LOGS</button>'
+      : '';
     area.innerHTML =
-      '<span class="logged-label">● '+currentUser+'</span>'+
+      '<span class="logged-label">● '+currentUser+' <span style="font-size:10px;opacity:.7;">('+roleLabel+')</span></span>'+
       ' &nbsp;<button class="nav-btn" onclick="showTab(\'write\')" style="color:var(--gold);">WRITE</button>'+
-      '<button class="nav-btn" onclick="showTab(\'apps\')" style="color:var(--gold);">APPLICATIONS</button>'+
-      '<button class="nav-btn" onclick="showTab(\'messages\')" style="color:var(--gold);">MESSAGES<span id="unreadNavBadge"></span></button>'+
-      '<button class="nav-btn" onclick="showTab(\'logs\')" style="color:var(--gold);">LOGS</button>'+
+      adminBtns+
       '<button class="signout-btn" onclick="doLogout()">SIGN OUT</button>';
-    updateUnreadBadge();
+    if (!isReporter) updateUnreadBadge();
   } else {
     area.innerHTML = '<button class="signin-btn" onclick="openLogin()">SIGN IN</button>';
   }
@@ -992,6 +1025,11 @@ function renderCommentsHTML(a) {
 }
 
 async function submitComment() {
+  var remaining = checkCooldown('dns5_comment_cooldown');
+  if (remaining > 0) {
+    alert('⏳ Please wait ' + fmtCountdown(remaining) + ' before posting another comment.');
+    return;
+  }
   var artId = parseInt(document.getElementById('artPage').dataset.artId);
   var name  = document.getElementById('cmtName').value.trim();
   var text  = document.getElementById('cmtText').value.trim();
@@ -1001,6 +1039,7 @@ async function submitComment() {
   if (!a.comments) a.comments = [];
   a.comments.push({ author:name, text:text, date:new Date().toISOString() });
   await sbUpdate('articles', artId, { comments: a.comments });
+  setCooldown('dns5_comment_cooldown');
   openArticle(artId);
 }
 
@@ -1034,10 +1073,18 @@ function renderStaff() {
   var grid = document.getElementById('staffGrid');
   var cards = staffMembers.map(function(s){
     var avatar = s.image ? '<img class="staff-avatar" src="'+s.image+'" alt="">' : '<div class="staff-avatar-placeholder">👤</div>';
-    var editBtns = loggedIn ? '<div class="staff-edit-btns"><button class="admin-btn pin-btn" onclick="openEditStaff('+s.id+')">✏️ Edit</button><button class="admin-btn del-btn" onclick="deleteStaff('+s.id+')">🗑 Remove</button></div>' : '';
-    return '<div class="staff-card">'+avatar+'<div class="staff-name">'+esc(s.name)+'</div><div class="staff-role">'+esc(s.role)+'</div><div class="staff-bio">'+esc(s.bio||'')+'</div>'+editBtns+'</div>';
+    var artCount = articles.filter(function(a){ return a.reporter.toLowerCase()===s.name.toLowerCase(); }).length;
+    var editBtns = loggedIn && !isReporter ? '<div class="staff-edit-btns"><button class="admin-btn pin-btn" onclick="event.stopPropagation();openEditStaff('+s.id+')">✏️ Edit</button><button class="admin-btn del-btn" onclick="event.stopPropagation();deleteStaff('+s.id+')">🗑 Remove</button></div>' : '';
+    return '<div class="staff-card" onclick="openReporter(\''+esc(s.name)+'\')" style="cursor:pointer;">'+
+      avatar+
+      '<div class="staff-name">'+esc(s.name)+'</div>'+
+      '<div class="staff-role">'+esc(s.role)+'</div>'+
+      '<div class="staff-bio">'+esc(s.bio||'')+'</div>'+
+      '<div style="font-family:monospace;font-size:11px;color:var(--muted);margin-top:10px;">'+artCount+' article'+(artCount!==1?'s':'')+'</div>'+
+      editBtns+
+    '</div>';
   }).join('');
-  var addBtn = loggedIn ? '<div class="add-staff-btn" onclick="openAddStaff()">+ ADD TEAM MEMBER</div>' : '';
+  var addBtn = loggedIn && !isReporter ? '<div class="add-staff-btn" onclick="openAddStaff()">+ ADD TEAM MEMBER</div>' : '';
   if (!staffMembers.length && !loggedIn) { grid.innerHTML='<div class="no-staff" style="grid-column:1/-1">No team members listed yet.</div>'; return; }
   grid.innerHTML = cards + addBtn;
 }
@@ -1064,6 +1111,7 @@ function openEditStaff(id) {
 function closeStaffModal() { document.getElementById('staffOverlay').style.display='none'; }
 
 async function saveStaffMember() {
+  if (isReporter) return;
   var name = document.getElementById('smName').value.trim();
   var role = document.getElementById('smRole').value.trim();
   var bio  = document.getElementById('smBio').value.trim();
@@ -1084,6 +1132,7 @@ async function saveStaffMember() {
 }
 
 async function deleteStaff(id) {
+  if (isReporter) return;
   if (!confirm('Remove this team member?')) return;
   var s = staffMembers.find(function(x){return x.id===id;});
   var name = s ? s.name : 'member';
@@ -1102,21 +1151,57 @@ function readStaffImg(file){
 function removeStaffImg(){ staffImgData=null; document.getElementById('staffImgInput').value=''; document.getElementById('staffImgPreview').style.display='none'; document.getElementById('staffDropZone').style.display='block'; }
 
 // ══════════════════════════════════════════════
+//  COOLDOWN HELPERS (5 min = 300000ms)
+// ══════════════════════════════════════════════
+var COOLDOWN_MS = 5 * 60 * 1000;
+
+function checkCooldown(key) {
+  var last = localStorage.getItem(key);
+  if (!last) return 0;
+  var diff = Date.now() - parseInt(last);
+  return diff < COOLDOWN_MS ? Math.ceil((COOLDOWN_MS - diff) / 1000) : 0;
+}
+function setCooldown(key) { localStorage.setItem(key, String(Date.now())); }
+function fmtCountdown(secs) {
+  var m = Math.floor(secs / 60), s = secs % 60;
+  return m + ':' + (s < 10 ? '0' : '') + s;
+}
+
+// ══════════════════════════════════════════════
 //  APPLICATIONS
 // ══════════════════════════════════════════════
+var activeAppTab = 'pending';
+
+function setAppTab(tab, btn) {
+  activeAppTab = tab;
+  document.querySelectorAll('.app-tab-btn').forEach(function(b){ b.classList.remove('active'); });
+  btn.classList.add('active');
+  renderApps();
+}
+
 async function submitApp() {
+  var remaining = checkCooldown('dns5_app_cooldown');
+  if (remaining > 0) {
+    var el = document.getElementById('appCooldownMsg');
+    el.style.display = 'block';
+    el.textContent = '⏳ Please wait ' + fmtCountdown(remaining) + ' before submitting another application.';
+    return;
+  }
   var d=document.getElementById('appDiscord').value.trim();
   var r=document.getElementById('appRoblox').value.trim();
   var e=document.getElementById('appExp').value.trim();
   var f=document.getElementById('appFire').value.trim();
   var m=document.getElementById('appMurder').value.trim();
   if(!d||!r||!e||!f||!m){ alert('Please fill out all fields.'); return; }
-  await sbInsert('applications', { id:Date.now(), discord:d, roblox:r, exp:e, fire:f, murder:m, date:new Date().toISOString() });
+  await sbInsert('applications', { id:Date.now(), discord:d, roblox:r, exp:e, fire:f, murder:m, date:new Date().toISOString(), status:'pending' });
+  setCooldown('dns5_app_cooldown');
   document.getElementById('applyFormWrap').style.display='none';
   document.getElementById('applySuccess').style.display='block';
 }
+
 function resetApp(){
   ['appDiscord','appRoblox','appExp','appFire','appMurder'].forEach(function(id){document.getElementById(id).value='';});
+  document.getElementById('appCooldownMsg').style.display='none';
   document.getElementById('applyFormWrap').style.display='block';
   document.getElementById('applySuccess').style.display='none';
 }
@@ -1124,17 +1209,31 @@ function resetApp(){
 async function renderApps() {
   var el = document.getElementById('appsList');
   el.innerHTML = '<div style="text-align:center;padding:40px;color:var(--muted);font-family:monospace;">Loading...</div>';
-  var apps = await sbGet('applications', 'order=id.desc');
-  if (!apps || !apps.length) { el.innerHTML='<div class="no-apps">No applications yet.</div>'; return; }
+  var apps = await sbGet('applications', 'status=eq.'+activeAppTab+'&order=id.desc');
+  if (!apps || !apps.length) { el.innerHTML='<div class="no-apps">No '+activeAppTab+' applications.</div>'; return; }
   el.innerHTML = apps.map(function(a){
+    var statusBadge = '<span class="status-badge '+a.status+'">'+a.status.toUpperCase()+'</span>';
+    var actionBtns = activeAppTab === 'pending'
+      ? '<button class="accept-btn" onclick="decideApp('+a.id+',\'accepted\')">✓ ACCEPT</button>'+
+        '<button class="deny-btn" onclick="decideApp('+a.id+',\'denied\')">✕ DENY</button>'+
+        '<button class="admin-btn del-btn" onclick="deleteApp('+a.id+')">🗑</button>'
+      : '<button class="admin-btn del-btn" onclick="deleteApp('+a.id+')">🗑 Delete</button>';
     return '<div class="app-item">'+
-      '<div class="app-item-header"><div><h3>'+esc(a.discord)+'</h3><div class="app-ids">Roblox: '+esc(a.roblox)+' &nbsp;|&nbsp; Submitted: '+fmtDate(a.date)+'</div></div>'+
-      '<button class="admin-btn del-btn" onclick="deleteApp('+a.id+')">🗑 Delete</button></div>'+
+      '<div class="app-item-header"><div><h3>'+esc(a.discord)+'</h3><div class="app-ids">Roblox: '+esc(a.roblox)+' &nbsp;|&nbsp; '+fmtDate(a.date)+' &nbsp;|&nbsp; '+statusBadge+'</div></div>'+
+      '<div style="display:flex;gap:8px;align-items:center;">'+actionBtns+'</div></div>'+
       '<div class="app-section"><div class="app-section-label">PAST EXPERIENCE</div><div class="app-section-text">'+esc(a.exp)+'</div></div>'+
       '<div class="app-section"><div class="app-section-label">SCENARIO 1 — HOSPITAL FIRE</div><div class="app-section-text">'+esc(a.fire)+'</div></div>'+
       '<div class="app-section"><div class="app-section-label">SCENARIO 2 — MURDER ARREST</div><div class="app-section-text">'+esc(a.murder)+'</div></div>'+
     '</div>';
   }).join('');
+}
+
+async function decideApp(id, decision) {
+  var apps = await sbGet('applications', 'id=eq.'+id);
+  var who = apps && apps[0] ? apps[0].discord : 'applicant';
+  await sbUpdate('applications', id, { status: decision });
+  addLog('app', currentUser, decision === 'accepted' ? 'accepted application from' : 'denied application from', who, null);
+  renderApps();
 }
 
 async function deleteApp(id) {
@@ -1157,6 +1256,13 @@ function selectContactType(btn, type) {
 }
 
 async function submitContact() {
+  var remaining = checkCooldown('dns5_contact_cooldown');
+  if (remaining > 0) {
+    var el = document.getElementById('contactCooldownMsg');
+    el.style.display = 'block';
+    el.textContent = '⏳ Please wait ' + fmtCountdown(remaining) + ' before sending another message.';
+    return;
+  }
   var discord = document.getElementById('ctxDiscord').value.trim();
   var subject = document.getElementById('ctxSubject').value.trim();
   var message = document.getElementById('ctxMessage').value.trim();
@@ -1164,6 +1270,7 @@ async function submitContact() {
   if (!subject) { alert('Please enter a subject.'); return; }
   if (!message) { alert('Please write your message.'); return; }
   await sbInsert('contacts', { id:Date.now(), discord, type:selectedContactType, subject, message, date:new Date().toISOString(), read:false });
+  setCooldown('dns5_contact_cooldown');
   updateUnreadBadge();
   document.getElementById('contactFormWrap').style.display='none';
   document.getElementById('contactSuccess').style.display='block';
