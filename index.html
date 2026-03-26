@@ -378,7 +378,6 @@ body{background:var(--bg);color:var(--text);font-family:Georgia,serif;min-height
     <div class="nav-left">
       <button class="nav-btn active" onclick="showTab('home')">HOME</button>
       <button class="nav-btn" onclick="showTab('about')">ABOUT</button>
-      <button class="nav-btn" onclick="showTab('archive')">ARCHIVE</button>
       <button class="nav-btn" onclick="showTab('gallery')">GALLERY</button>
       <button class="nav-btn" onclick="showTab('apply')">APPLY</button>
       <button class="nav-btn" onclick="showTab('contact')">CONTACT</button>
@@ -582,14 +581,6 @@ body{background:var(--bg);color:var(--text);font-family:Georgia,serif;min-height
       <button class="btn-ghost" style="font-size:11px;padding:8px 16px;" onclick="clearLogs()">🗑 Clear All Logs</button>
     </div>
     <div id="logsList"></div>
-  </div>
-</div>
-
-<!-- ARCHIVE TAB -->
-<div id="tab-archive" class="tab">
-  <div class="archive-wrap">
-    <div class="sec-title">ARCHIVE</div>
-    <div id="archiveContent"></div>
   </div>
 </div>
 
@@ -834,12 +825,11 @@ function showTab(name) {
   document.querySelectorAll('.tab').forEach(function(t){ t.classList.remove('active'); });
   document.querySelectorAll('.nav-btn').forEach(function(b){ b.classList.remove('active'); });
   document.getElementById('tab-'+name).classList.add('active');
-  var map = {home:0,about:1,archive:2,gallery:3,apply:4,contact:5};
+  var map = {home:0,about:1,gallery:2,apply:3,contact:4};
   if (map[name] !== undefined) document.querySelectorAll('.nav-btn')[map[name]].classList.add('active');
   if (name === 'apps') renderApps();
   if (name === 'messages') renderMessages();
   if (name === 'logs') renderLogs();
-  if (name === 'archive') renderArchive();
   if (name === 'gallery') renderGallery();
   if (name === 'dashboard') renderDashboard();
 }
