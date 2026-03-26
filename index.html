@@ -297,6 +297,48 @@ body{background:var(--bg);color:var(--text);font-family:Georgia,serif;min-height
 .log-time{font-family:monospace;font-size:11px;color:var(--muted);flex-shrink:0;white-space:nowrap}
 .log-location{display:inline-block;background:rgba(100,160,255,.1);border:1px solid rgba(100,160,255,.25);color:#6ab4ff;font-family:monospace;font-size:10px;padding:2px 8px;border-radius:10px;margin-left:8px}
 .no-logs{text-align:center;padding:60px 20px;color:var(--muted);font-family:monospace;font-size:13px}
+/* ARCHIVE */
+.archive-wrap{max-width:1100px;margin:0 auto;padding:50px 20px}
+.archive-month{margin-bottom:48px}
+.archive-month-title{font-family:monospace;font-size:13px;letter-spacing:4px;color:var(--gold);margin-bottom:20px;padding-bottom:12px;border-bottom:2px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+.archive-month-count{font-size:11px;color:var(--muted);letter-spacing:1px}
+.archive-list{display:flex;flex-direction:column;gap:12px}
+.archive-item{background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:16px 20px;cursor:pointer;display:flex;align-items:center;gap:16px;transition:border-color .2s}
+.archive-item:hover{border-color:var(--red)}
+.archive-item-img{width:70px;height:55px;object-fit:cover;border-radius:4px;flex-shrink:0}
+.archive-item-no-img{width:70px;height:55px;background:var(--mid);border-radius:4px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:900;color:rgba(200,16,46,.2)}
+.archive-item-info{flex:1}
+.archive-item-info h3{font-size:16px;font-weight:700;color:var(--white);margin-bottom:4px;line-height:1.3}
+.archive-item-meta{font-family:monospace;font-size:11px;color:var(--muted)}
+.archive-item-views{font-family:monospace;font-size:11px;color:var(--muted);flex-shrink:0}
+/* GALLERY */
+.gallery-wrap{max-width:1100px;margin:0 auto;padding:50px 20px}
+.gallery-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:32px;padding-bottom:16px;border-bottom:2px solid var(--border)}
+.gallery-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px}
+.gallery-item{background:var(--surface);border:1px solid var(--border);border-radius:6px;overflow:hidden;cursor:pointer;transition:transform .2s,border-color .2s;position:relative}
+.gallery-item:hover{transform:translateY(-3px);border-color:var(--red)}
+.gallery-item img{width:100%;height:220px;object-fit:cover;display:block}
+.gallery-caption{padding:12px 16px;font-size:13px;color:var(--muted);line-height:1.5}
+.gallery-delete{position:absolute;top:8px;right:8px;background:rgba(200,16,46,.85);color:#fff;border:none;font-family:monospace;font-size:11px;padding:5px 10px;border-radius:3px;cursor:pointer;display:none}
+.gallery-item:hover .gallery-delete{display:block}
+.gallery-upload-box{background:rgba(200,16,46,.1);border:2px dashed rgba(200,16,46,.4);border-radius:8px;padding:40px;text-align:center;cursor:pointer;transition:all .2s;color:var(--red);font-family:monospace;font-size:13px;letter-spacing:2px;margin-bottom:24px}
+.gallery-upload-box:hover{background:rgba(200,16,46,.2)}
+.gallery-lightbox{position:fixed;inset:0;background:rgba(0,0,0,.95);z-index:3000;display:flex;align-items:center;justify-content:center;cursor:pointer}
+.gallery-lightbox img{max-width:90vw;max-height:85vh;object-fit:contain;border-radius:4px}
+.gallery-lightbox-caption{position:absolute;bottom:30px;left:50%;transform:translateX(-50%);color:#fff;font-size:14px;font-family:monospace;background:rgba(0,0,0,.6);padding:8px 20px;border-radius:20px;white-space:nowrap}
+/* VIEW COUNTER */
+.view-count{font-family:monospace;font-size:11px;color:var(--muted);display:inline-flex;align-items:center;gap:4px}
+/* REPORTER DASHBOARD */
+.dashboard-wrap{max-width:960px;margin:0 auto;padding:50px 20px}
+.dash-welcome{background:linear-gradient(135deg,#1a0508,var(--surface));border:1px solid var(--border);border-radius:8px;padding:36px;margin-bottom:32px;display:flex;align-items:center;gap:24px}
+.dash-avatar{width:80px;height:80px;border-radius:50%;background:var(--red);display:flex;align-items:center;justify-content:center;font-size:36px;flex-shrink:0;border:3px solid var(--dark-red)}
+.dash-welcome h2{font-size:28px;color:var(--white);margin-bottom:6px}
+.dash-welcome p{color:var(--muted);font-size:14px}
+.dash-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:32px}
+.dash-stat{background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:24px;text-align:center}
+.dash-stat-num{font-size:36px;font-weight:700;color:var(--white);display:block;margin-bottom:4px}
+.dash-stat-label{font-family:monospace;font-size:10px;letter-spacing:2px;color:var(--muted)}
+.dash-articles-title{font-family:monospace;font-size:12px;letter-spacing:3px;color:var(--gold);margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid var(--border)}
 /* FOOTER */
 .site-footer{background:var(--surface);border-top:1px solid var(--border);margin-top:60px;padding:28px 40px;transition:background .3s}
 .footer-in{max-width:1100px;margin:0 auto;display:flex;align-items:center;justify-content:space-between}
@@ -336,6 +378,8 @@ body{background:var(--bg);color:var(--text);font-family:Georgia,serif;min-height
     <div class="nav-left">
       <button class="nav-btn active" onclick="showTab('home')">HOME</button>
       <button class="nav-btn" onclick="showTab('about')">ABOUT</button>
+      <button class="nav-btn" onclick="showTab('archive')">ARCHIVE</button>
+      <button class="nav-btn" onclick="showTab('gallery')">GALLERY</button>
       <button class="nav-btn" onclick="showTab('apply')">APPLY</button>
       <button class="nav-btn" onclick="showTab('contact')">CONTACT</button>
     </div>
@@ -541,7 +585,44 @@ body{background:var(--bg);color:var(--text);font-family:Georgia,serif;min-height
   </div>
 </div>
 
-<!-- LOGIN MODAL -->
+<!-- ARCHIVE TAB -->
+<div id="tab-archive" class="tab">
+  <div class="archive-wrap">
+    <div class="sec-title">ARCHIVE</div>
+    <div id="archiveContent"></div>
+  </div>
+</div>
+
+<!-- GALLERY TAB -->
+<div id="tab-gallery" class="tab">
+  <div class="gallery-wrap">
+    <div class="gallery-header">
+      <div class="sec-title" style="margin-bottom:0;padding-bottom:0;border:none;">PHOTO GALLERY</div>
+    </div>
+    <div id="galleryUploadArea" style="display:none">
+      <div class="gallery-upload-box" onclick="document.getElementById('galleryImgInput').click()">
+        📷 &nbsp; CLICK TO UPLOAD PHOTO
+        <input type="file" id="galleryImgInput" accept="image/*" style="display:none" onchange="handleGalleryImg(event)">
+      </div>
+      <div id="galleryUploadPreview" style="display:none;margin-bottom:24px;background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:20px;">
+        <img id="galleryPreviewImg" src="" style="width:100%;max-height:300px;object-fit:cover;border-radius:4px;margin-bottom:12px;">
+        <div class="fg"><label>CAPTION (optional)</label><input type="text" id="galleryCaptionInput" placeholder="Describe this photo..."></div>
+        <div style="display:flex;gap:10px;margin-top:8px;">
+          <button class="btn-red" onclick="uploadGalleryPhoto()">UPLOAD PHOTO</button>
+          <button class="btn-ghost" onclick="cancelGalleryUpload()">CANCEL</button>
+        </div>
+      </div>
+    </div>
+    <div class="gallery-grid" id="galleryGrid"></div>
+  </div>
+</div>
+
+<!-- DASHBOARD TAB (reporters only) -->
+<div id="tab-dashboard" class="tab">
+  <div class="dashboard-wrap">
+    <div id="dashboardContent"></div>
+  </div>
+</div>
 <div class="overlay" id="loginOverlay" style="display:none">
   <div class="modal-box login-box">
     <h2>Staff Sign In</h2>
@@ -690,6 +771,7 @@ async function loadAll() {
   staffMembers = stf || [];
   var pinVal = await sbGetSetting('pinned_id');
   pinnedId = pinVal ? parseInt(pinVal) : null;
+  await loadGallery();
   renderHome();
   renderStaff();
   await loadSettings();
@@ -747,15 +829,19 @@ function applyTheme() {
 // ══════════════════════════════════════════════
 function showTab(name) {
   if (name === 'write' && !loggedIn) { openLogin(); return; }
+  if (name === 'dashboard' && !loggedIn) return;
   if (['apps','messages','logs'].indexOf(name) !== -1 && (!loggedIn || isReporter)) return;
   document.querySelectorAll('.tab').forEach(function(t){ t.classList.remove('active'); });
   document.querySelectorAll('.nav-btn').forEach(function(b){ b.classList.remove('active'); });
   document.getElementById('tab-'+name).classList.add('active');
-  var map = {home:0,about:1,apply:2,contact:3};
+  var map = {home:0,about:1,archive:2,gallery:3,apply:4,contact:5};
   if (map[name] !== undefined) document.querySelectorAll('.nav-btn')[map[name]].classList.add('active');
   if (name === 'apps') renderApps();
   if (name === 'messages') renderMessages();
   if (name === 'logs') renderLogs();
+  if (name === 'archive') renderArchive();
+  if (name === 'gallery') renderGallery();
+  if (name === 'dashboard') renderDashboard();
 }
 
 // ══════════════════════════════════════════════
@@ -794,7 +880,7 @@ async function doLogin() {
     } catch(e) {
       addLog('login', currentUser, 'signed in', null, { location: 'Unknown', ip: 'Unknown' });
     }
-    showTab('write');
+    showTab(isReporter ? 'dashboard' : 'write');
   } else {
     document.getElementById('loginErr').style.display = 'block';
     document.getElementById('loginPass').value = '';
@@ -818,8 +904,9 @@ function updateAuthUI() {
     var adminBtns = !isReporter
       ? '<button class="nav-btn" onclick="showTab(\'apps\')" style="color:var(--gold);">APPLICATIONS</button>'+
         '<button class="nav-btn" onclick="showTab(\'messages\')" style="color:var(--gold);">MESSAGES<span id="unreadNavBadge"></span></button>'+
-        '<button class="nav-btn" onclick="showTab(\'logs\')" style="color:var(--gold);">LOGS</button>'
-      : '';
+        '<button class="nav-btn" onclick="showTab(\'logs\')" style="color:var(--gold);">LOGS</button>'+
+        '<button class="nav-btn" onclick="showTab(\'dashboard\')" style="color:var(--gold);">MY DASHBOARD</button>'
+      : '<button class="nav-btn" onclick="showTab(\'dashboard\')" style="color:var(--gold);">MY DASHBOARD</button>';
     area.innerHTML =
       '<span class="logged-label">● '+currentUser+' <span style="font-size:10px;opacity:.7;">('+roleLabel+')</span></span>'+
       ' &nbsp;<button class="nav-btn" onclick="showTab(\'write\')" style="color:var(--gold);">WRITE</button>'+
@@ -983,12 +1070,15 @@ function renderHome() {
 
 function buildCard(a) {
   var img = a.image ? '<img class="card-img" src="'+a.image+'" alt="">' : '<div class="card-no-img">5</div>';
-  var adm = loggedIn ? '<div class="card-admin"><button class="admin-btn del-btn" onclick="deleteArticle('+a.id+',event)">🗑</button><button class="admin-btn pin-btn" onclick="togglePin('+a.id+',event)">📌</button></div>' : '';
+  var adm = (loggedIn && !isReporter) ? '<div class="card-admin"><button class="admin-btn del-btn" onclick="deleteArticle('+a.id+',event)">🗑</button><button class="admin-btn pin-btn" onclick="togglePin('+a.id+',event)">📌</button></div>' : '';
+  var views = getViews(a.id);
   return '<div class="card" onclick="openArticle('+a.id+')">'+adm+img+
     '<div class="card-body"><span class="cat-tag">'+esc(a.category)+'</span>'+
     '<h3>'+esc(a.headline)+'</h3>'+
     '<div class="art-meta">BY <span class="reporter-link" onclick="event.stopPropagation();openReporter(\''+esc(a.reporter)+'\')">'+esc(a.reporter).toUpperCase()+'</span> &nbsp;|&nbsp; '+fmtDate(a.date)+'</div>'+
-    '<p class="card-excerpt">'+expt(a.body,100)+'</p></div></div>';
+    '<p class="card-excerpt">'+expt(a.body,100)+'</p>'+
+    '<div style="margin-top:8px;"><span class="view-count">👁 '+views+' view'+(views!==1?'s':'')+'</span></div>'+
+    '</div></div>';
 }
 
 // ══════════════════════════════════════════════
@@ -998,13 +1088,15 @@ function openArticle(id) {
   var a = articles.find(function(x){return x.id===id;});
   if (!a) return;
   if (!a.comments) a.comments = [];
+  incrementViews(id);
+  var views = getViews(id);
   var imgB = a.image ? '<img class="art-page-hero" src="'+a.image+'" alt="">' : '';
   var cap  = a.caption ? '<div class="art-page-caption">'+esc(a.caption)+'</div>' : '';
   document.getElementById('artPanelInner').innerHTML =
     imgB+'<div class="art-page-body-wrap">'+
       '<span class="cat-tag">'+esc(a.category)+'</span>'+
       '<h2>'+esc(a.headline)+'</h2>'+
-      '<div class="art-meta" style="margin-bottom:20px;">BY <span class="reporter-link" onclick="closeArt();openReporter(\''+esc(a.reporter)+'\')">'+esc(a.reporter).toUpperCase()+'</span> &nbsp;|&nbsp; '+fmtDate(a.date)+'</div>'+
+      '<div class="art-meta" style="margin-bottom:20px;">BY <span class="reporter-link" onclick="closeArt();openReporter(\''+esc(a.reporter)+'\')">'+esc(a.reporter).toUpperCase()+'</span> &nbsp;|&nbsp; '+fmtDate(a.date)+' &nbsp;|&nbsp; <span class="view-count">👁 '+views+'</span></div>'+
       cap+'<div class="art-page-text">'+esc(a.body)+'</div>'+
       renderCommentsHTML(a)+
     '</div>';
@@ -1441,6 +1533,175 @@ async function clearLogs() {
   if (!confirm('Clear all activity logs?')) return;
   await sbFetch('logs', { method:'DELETE', query:'id=gt.0' });
   renderLogs();
+}
+
+// ══════════════════════════════════════════════
+//  VIEW COUNTER
+// ══════════════════════════════════════════════
+function getViews(id) {
+  try { return parseInt(localStorage.getItem('dns5_views_'+id)||'0'); } catch(e){ return 0; }
+}
+function incrementViews(id) {
+  try {
+    var key = 'dns5_viewed_'+id;
+    if (sessionStorage.getItem(key)) return; // only count once per session
+    sessionStorage.setItem(key, '1');
+    var v = getViews(id) + 1;
+    localStorage.setItem('dns5_views_'+id, String(v));
+  } catch(e){}
+}
+
+// ══════════════════════════════════════════════
+//  ARCHIVE
+// ══════════════════════════════════════════════
+function renderArchive() {
+  var el = document.getElementById('archiveContent');
+  if (!articles.length) { el.innerHTML='<div style="text-align:center;padding:60px;color:var(--muted);font-family:monospace;">No articles yet.</div>'; return; }
+  // Group by month
+  var groups = {};
+  articles.forEach(function(a) {
+    var d = new Date(a.date);
+    var key = d.getFullYear()+'-'+(d.getMonth()+1);
+    var label = d.toLocaleDateString('en-US',{month:'long',year:'numeric'}).toUpperCase();
+    if (!groups[key]) groups[key] = { label:label, items:[] };
+    groups[key].items.push(a);
+  });
+  var keys = Object.keys(groups).sort(function(a,b){return b.localeCompare(a);});
+  el.innerHTML = keys.map(function(k) {
+    var g = groups[k];
+    var items = g.items.map(function(a) {
+      var img = a.image ? '<img class="archive-item-img" src="'+a.image+'" alt="">' : '<div class="archive-item-no-img">5</div>';
+      var views = getViews(a.id);
+      return '<div class="archive-item" onclick="openArticle('+a.id+')">'+img+
+        '<div class="archive-item-info">'+
+          '<span class="cat-tag" style="margin-bottom:6px;">'+esc(a.category)+'</span>'+
+          '<h3>'+esc(a.headline)+'</h3>'+
+          '<div class="archive-item-meta">BY <span class="reporter-link" onclick="event.stopPropagation();openReporter(\''+esc(a.reporter)+'\')">'+esc(a.reporter).toUpperCase()+'</span></div>'+
+        '</div>'+
+        '<div class="archive-item-views">👁 '+views+'</div>'+
+      '</div>';
+    }).join('');
+    return '<div class="archive-month">'+
+      '<div class="archive-month-title">'+g.label+'<span class="archive-month-count">'+g.items.length+' ARTICLE'+(g.items.length!==1?'S':'')+'</span></div>'+
+      '<div class="archive-list">'+items+'</div>'+
+    '</div>';
+  }).join('');
+}
+
+// ══════════════════════════════════════════════
+//  PHOTO GALLERY
+// ══════════════════════════════════════════════
+var galleryImgData = null;
+var galleryPhotos = [];
+
+async function loadGallery() {
+  var res = await sbGet('settings', 'key=eq.gallery');
+  if (res && res[0] && res[0].value) {
+    try { galleryPhotos = JSON.parse(res[0].value); } catch(e){ galleryPhotos=[]; }
+  }
+}
+
+async function renderGallery() {
+  if (!galleryPhotos.length) await loadGallery();
+  var uploadArea = document.getElementById('galleryUploadArea');
+  if (uploadArea) uploadArea.style.display = (loggedIn && !isReporter) ? 'block' : 'none';
+  var grid = document.getElementById('galleryGrid');
+  if (!galleryPhotos.length) {
+    grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:60px;color:var(--muted);font-family:monospace;">No photos yet.</div>';
+    return;
+  }
+  grid.innerHTML = galleryPhotos.map(function(p, i) {
+    var delBtn = (loggedIn && !isReporter) ? '<button class="gallery-delete" onclick="deleteGalleryPhoto('+i+',event)">🗑</button>' : '';
+    return '<div class="gallery-item" onclick="openLightbox('+i+')">'+delBtn+
+      '<img src="'+p.image+'" alt="'+esc(p.caption||'')+'">'+
+      (p.caption ? '<div class="gallery-caption">'+esc(p.caption)+'</div>' : '')+
+    '</div>';
+  }).join('');
+}
+
+function handleGalleryImg(e) {
+  var f = e.target.files[0]; if(!f) return;
+  var r = new FileReader();
+  r.onload = function(ev) {
+    galleryImgData = ev.target.result;
+    document.getElementById('galleryPreviewImg').src = galleryImgData;
+    document.getElementById('galleryUploadPreview').style.display = 'block';
+  };
+  r.readAsDataURL(f);
+}
+
+async function uploadGalleryPhoto() {
+  if (!galleryImgData) return;
+  var caption = document.getElementById('galleryCaptionInput').value.trim();
+  galleryPhotos.unshift({ image: galleryImgData, caption: caption, date: new Date().toISOString() });
+  await sbSetSetting('gallery', JSON.stringify(galleryPhotos));
+  galleryImgData = null;
+  document.getElementById('galleryImgInput').value = '';
+  document.getElementById('galleryUploadPreview').style.display = 'none';
+  document.getElementById('galleryCaptionInput').value = '';
+  addLog('staff', currentUser, 'uploaded photo to gallery', caption||'(no caption)', null);
+  renderGallery();
+}
+
+function cancelGalleryUpload() {
+  galleryImgData = null;
+  document.getElementById('galleryImgInput').value = '';
+  document.getElementById('galleryUploadPreview').style.display = 'none';
+  document.getElementById('galleryCaptionInput').value = '';
+}
+
+async function deleteGalleryPhoto(i, e) {
+  if (e) e.stopPropagation();
+  if (!confirm('Delete this photo?')) return;
+  galleryPhotos.splice(i, 1);
+  await sbSetSetting('gallery', JSON.stringify(galleryPhotos));
+  renderGallery();
+}
+
+function openLightbox(i) {
+  var p = galleryPhotos[i]; if (!p) return;
+  var el = document.createElement('div');
+  el.className = 'gallery-lightbox';
+  el.innerHTML = '<img src="'+p.image+'" alt="">'+(p.caption?'<div class="gallery-lightbox-caption">'+esc(p.caption)+'</div>':'');
+  el.onclick = function(){ document.body.removeChild(el); document.body.style.overflow=''; };
+  document.body.appendChild(el);
+  document.body.style.overflow = 'hidden';
+}
+
+// ══════════════════════════════════════════════
+//  REPORTER DASHBOARD
+// ══════════════════════════════════════════════
+function renderDashboard() {
+  var el = document.getElementById('dashboardContent');
+  var myArts = articles.filter(function(a){ return a.reporter.toLowerCase()===currentUser.toLowerCase(); });
+  var totalViews = myArts.reduce(function(s,a){ return s+getViews(a.id); }, 0);
+  var totalComments = myArts.reduce(function(s,a){ return s+(a.comments?a.comments.length:0); }, 0);
+  var staffMatch = staffMembers.find(function(s){ return s.name.toLowerCase()===currentUser.toLowerCase(); });
+  var avatarSrc = staffMatch && staffMatch.image ? staffMatch.image : null;
+  var avatarHtml = avatarSrc
+    ? '<img src="'+avatarSrc+'" style="width:80px;height:80px;border-radius:50%;object-fit:cover;border:3px solid var(--red);">'
+    : '<div class="dash-avatar">✍️</div>';
+
+  var artCards = myArts.length
+    ? '<div class="news-grid">'+myArts.map(buildCard).join('')+'</div>'
+    : '<div style="text-align:center;padding:40px;color:var(--muted);font-family:monospace;">You haven\'t published any articles yet.</div>';
+
+  el.innerHTML =
+    '<div class="dash-welcome">'+avatarHtml+
+      '<div><h2>Welcome back, '+esc(currentUser)+'</h2>'+
+        '<p>You are signed in as a Reporter for Denver News Station 5.</p>'+
+        '<div style="display:flex;gap:10px;margin-top:14px;">'+
+          '<button class="btn-red" onclick="showTab(\'write\')" style="font-size:12px;padding:10px 20px;">✏️ WRITE ARTICLE</button>'+
+        '</div>'+
+      '</div>'+
+    '</div>'+
+    '<div class="dash-stats">'+
+      '<div class="dash-stat"><span class="dash-stat-num">'+myArts.length+'</span><span class="dash-stat-label">ARTICLES PUBLISHED</span></div>'+
+      '<div class="dash-stat"><span class="dash-stat-num">'+totalViews+'</span><span class="dash-stat-label">TOTAL VIEWS</span></div>'+
+      '<div class="dash-stat"><span class="dash-stat-num">'+totalComments+'</span><span class="dash-stat-label">TOTAL COMMENTS</span></div>'+
+    '</div>'+
+    '<div class="dash-articles-title">YOUR ARTICLES</div>'+
+    artCards;
 }
 
 // ══════════════════════════════════════════════
